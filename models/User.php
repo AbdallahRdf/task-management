@@ -17,17 +17,7 @@ class User
         return (new Database())->query($sql, $params);
     }
 
-    // if the user exists, return true, else false;
-    public static function does_user_exist($email)
-    {
-        $sql = "SELECT * FROM users WHERE email = :email";
-
-        $params = [":email" => $email];
-
-        return !empty((new Database)->query($sql, $params));
-    }
-
-    // returns the user data
+    // returns array of user, each user is an array with the user data
     public static function get_user_credentials($email)
     {
         $sql = "SELECT * FROM users WHERE email = :email";

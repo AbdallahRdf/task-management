@@ -6,6 +6,13 @@ function isNameValid($name)
     return preg_match("/[a-zA-Z]+(\s*([a-zA-Z])*)*$/", $name); // This pattern is designed to match words consisting of alphabetical characters
 }
 
+// validate the name
+function isStrValid($str)
+{
+    return preg_match("/[a-zA-Z0-9]+(\s*([a-zA-Z0-9])*)*$/", $str); // This pattern is designed to match words consisting of alphabetical characters
+}
+
+
 // validate the password
 function isPasswordValid($password)
 {

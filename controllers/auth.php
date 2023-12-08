@@ -6,15 +6,23 @@ ini_set("display_errors", 1);
 require_once "../util/functions.php";
 require_once "../models/User.php";
 
+session_start();
+
+function user_is_valid($user_credentials)
+{
+    $_SESSION["user"] = $user_credentials;
+    header("location: ../views/home.php");
+    die();
+}
+
 if($_SERVER["REQUEST_METHOD"] === "POST")
 {
-    session_start();
+    $email = trim($_POST["email"]);
+    $password = $_POST["password"];
 
     if(isset($_POST["name"])) // handles sign up process
     {
         $name = trim($_POST["name"]);
-        $email = trim($_POST["email"]);
-        $password = $_POST["password"];
 
         $ERRORS = [];
         $OLD = [];
@@ -23,7 +31,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
         {
             $ERRORS["name_error_message"] = "Invalid Name";
         }
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL) || User::does_user_exist($email))
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL) || count(User::get_user_credentials($email)) > 0)
         {
             $ERRORS["email_error_message"] = "Invalid Email";
         }
@@ -45,9 +53,28 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
         }
         $hash = password_hash($password, PASSWORD_DEFAULT);
         User::create($name, $email, $hash);
+
+        user_is_valid(User::get_user_credentials($email)[0]);
+    }
+    else if(isset($_POST["email"])) // handles login process
+    {
+        $users_credentials = User::get_user_credentials($email);
+        $is_password_correct = password_verify($password, $users_credentials[0]["password"]);
         
-        $_SESSION["user"] = User::get_user_credentials($email);
-        header("location: ../views/home.php");
-        die();
+        // if the email is not valid, there is no account with the email, or the password is incorrect then:
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || count($users_credentials) <= 0 || !$is_password_correct) 
+        {
+            $_SESSION["old"] = $email;
+            header("location: ../views/login.php");
+            die();
+        }
+        user_is_valid($users_credentials[0]);
     }
 }
+if(isset($_SESSION["user"]))
+{
+    unset($_SESSION);
+    session_destroy();
+}
+header("location: ../views/login.php");
+die();
