@@ -1,4 +1,3 @@
-
 const baseURL = "http://localhost/task-management/api/data.php";
 
 let currentInput = null;
@@ -56,8 +55,16 @@ const sendData = async (checked, id) => {
 // handles when a checkbox is checked
 const handleChecked = (e) => {
     const hiddenInput = e.target.parentNode.firstChild;
+    const nameInput = e.target.parentNode[2];
     const checkBox = e.target;
-
+    if (checkBox.checked) {
+        nameInput.classList.add("text-secondary");
+        nameInput.classList.remove("text-dark");
+    }
+    else {
+        nameInput.classList.add("text-dark");
+        nameInput.classList.remove("text-secondary");
+    }
     sendData(checkBox.checked, hiddenInput.value);
 }
 
@@ -125,14 +132,6 @@ const createDataRow = (data) => {
     hInput.name = "task-id";
     hInput.value = data["id"];
 
-    // create the checkbox;
-    const checkBox = document.createElement("input");
-    checkBox.type = "checkbox";
-    checkBox.classList.add("form-check-input", "align-self-center", "me-1");
-    checkBox.name = "finished";
-    checkBox.checked = data["isFinished"];
-    checkBox.addEventListener("change", e => handleChecked(e));
-
     // create the task name input;
     const input = document.createElement("input");
     input.type = "text";
@@ -140,6 +139,15 @@ const createDataRow = (data) => {
     input.name = "task-name";
     input.disabled = true;
     input.value = data["name"];
+
+    // create the checkbox;
+    const checkBox = document.createElement("input");
+    checkBox.type = "checkbox";
+    checkBox.classList.add("form-check-input", "align-self-center", "me-1");
+    checkBox.name = "finished";
+    checkBox.checked = data["isFinished"];
+    input.classList.add(checkBox.checked ? "text-secondary" : "text-dark");
+    checkBox.addEventListener("change", e => handleChecked(e));
 
     // create the update button;
     const updateBtn = document.createElement("button");
