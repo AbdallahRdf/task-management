@@ -103,11 +103,13 @@ const handleUpdateFormSubmit = (e) => {
 const createDataRow = (data) => {
     // create the row that will hold the data;
     const rowDiv = document.createElement("div");
+    rowDiv.classList.add("d-flex", "align-items-center", "mb-3", "border-bottom", "pb-1");
 
     // create the update form;
     const updateForm = document.createElement("form");
     updateForm.method = "post";
     updateForm.action = "../../controllers/taskController.php";
+    updateForm.classList.add("d-flex", "w-100", "me-1");
     updateForm.addEventListener("submit", e => handleUpdateFormSubmit(e));
     updateForm.style.display = "inline";
 
@@ -126,6 +128,7 @@ const createDataRow = (data) => {
     // create the checkbox;
     const checkBox = document.createElement("input");
     checkBox.type = "checkbox";
+    checkBox.classList.add("form-check-input", "align-self-center", "me-1");
     checkBox.name = "finished";
     checkBox.checked = data["isFinished"];
     checkBox.addEventListener("change", e => handleChecked(e));
@@ -133,25 +136,27 @@ const createDataRow = (data) => {
     // create the task name input;
     const input = document.createElement("input");
     input.type = "text";
+    input.classList.add("form-control", "bg-transparent", "border-0");
     input.name = "task-name";
     input.disabled = true;
     input.value = data["name"];
 
     // create the update button;
     const updateBtn = document.createElement("button");
-    updateBtn.classList.add("update-btn");
+    updateBtn.classList.add("update-btn", "btn", "btn-outline-success");
     updateBtn.textContent = "Update";
 
     // create the update form;
     const deleteForm = document.createElement("form");
     deleteForm.method = "post";
     deleteForm.action = "../../controllers/taskController.php";
+    deleteForm.classList.add("d-flex");
     // deleteForm.addEventListener("submit", e => handleDeleteFormSubmit(e));
     deleteForm.style.display = "inline";
 
     // create the delete button;
     const deleteBtn = document.createElement("button");
-    deleteBtn.classList.add("delete-btn");
+    deleteBtn.classList.add("delete-btn", "btn", "btn-outline-danger");
     deleteBtn.textContent = "Delete";
 
     
