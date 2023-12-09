@@ -11,7 +11,7 @@ session_start();
 function user_is_valid($user_credentials)
 {
     $_SESSION["user"] = $user_credentials;
-    header("location: ../views/home.php");
+    header("location: ../resources/views/home.php");
     die();
 }
 
@@ -48,7 +48,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
 
             $_SESSION["old"] = $OLD;
             $_SESSION["signup_errors"] = $ERRORS;
-            header("location: ../views/signup.php");
+            header("location: ../resources/views/signup.php");
             die();
         }
         $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -65,7 +65,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST")
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) || count($users_credentials) <= 0 || !$is_password_correct) 
         {
             $_SESSION["old"] = $email;
-            header("location: ../views/login.php");
+            header("location: ../resources/views/login.php");
             die();
         }
         user_is_valid($users_credentials[0]);
@@ -76,5 +76,5 @@ if(isset($_SESSION["user"]))
     unset($_SESSION);
     session_destroy();
 }
-header("location: ../views/login.php");
+header("location: ../index.html");
 die();

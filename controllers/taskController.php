@@ -10,17 +10,27 @@ session_start();
 
 if($_SERVER["REQUEST_METHOD"] === "POST")
 {
-    $task_name = $_POST["task-name"];
-
-    if(!isStrValid($task_name))
+    
+    if(isset($_POST["task-id"]) && isset($_POST["task-name"])) // update
     {
-        $_SESSION["task_name_error_message"] = "Invalid task name.";
-        $_SESSION["old"] = $task_name;
+        Task::update($_POST["task-name"], $_POST["task-id"]);
     }
-    else {
-        Task::create($task_name, $_SESSION["user"]["id"]);
+    else if(isset($_POST["task-name"])) // create
+    {
+        $task_name = $_POST["task-name"];
+        if(!isStrValid($task_name))
+        {
+            $_SESSION["task_name_error_message"] = "Invalid task name.";
+            $_SESSION["old"] = $task_name;
+        }
+        else {
+            Task::create($task_name, $_SESSION["user"]["id"]);
+        }
+    }
+    else if(isset($_POST["task-id"]))
+    {
+        Task::delete($_POST["task-id"]);
     }
 }
-$_SESSION["tasks"] = Task::all();
-header("location: ../views/home.php");
+header("location: ../resources/views/home.php");
 die();

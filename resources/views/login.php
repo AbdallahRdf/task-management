@@ -22,7 +22,7 @@ unset($_SESSION["old"]);
     <div style="display: <?= $should_show ?>">
         Invalid Email or Password
     </div>
-    <form action="../controllers/auth.php" method="post">
+    <form action="../../controllers/auth.php" method="post">
         <div>
             <input type="email" name="email" placeholder="E-Mail" value="<?= $old_email ?>">
         </div>

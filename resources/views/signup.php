@@ -25,7 +25,7 @@ unset($_SESSION["old"]);
 </head>
 
 <body>
-    <form action="../controllers/auth.php" method="post">
+    <form action="../../controllers/auth.php" method="post">
         <div>
             <input type="text" name="name" placeholder="Full Name" value="<?= $old_name ?>">
             <small>

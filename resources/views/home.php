@@ -23,23 +23,20 @@ unset($_SESSION["old"]);
     <title>TaskFlow</title>
 </head>
 <body>
-    <form method="post" action="../controllers/taskController.php">
+    <nav>
+        <a href="../../controllers/auth.php">Log out</a>
+    </nav>
+
+    <!-- add new task -->
+    <form method="post" action="../../controllers/taskController.php">
         <input type="text" name="task-name" value="<?= $old_task_name ?>">
         <button type="submit">Save</button>
         <small><?= $task_error_message ?></small>
-    </form>
-    <div>
-        <?php if(count($_SESSION["tasks"]) > 0): ?>
-            <?php foreach($_SESSION["tasks"] as $task): ?>
-                <div>
-                    <?= $task["name"] ?>
-                </div>
-            <?php endforeach ?>
-        <?php else: ?>
-            <div>
-                NO Tasks To Show!
-            </div>
-        <?php endif ?>
-    </div>
+    </form><br>
+    
+    <!-- tasks -->
+    <div id="tasks-table"></div>
+
+    <script src="../js/script.js"></script>
 </body>
 </html>
