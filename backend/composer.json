@@ -1,0 +1,9 @@
+{
+    "name": "backend/app",
+    "autoload": {
+        "psr-4": {
+            "Backend\\App\\": "app/"
+        }
+    },
+    "require": {}
+}
