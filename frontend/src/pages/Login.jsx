@@ -5,7 +5,7 @@ function Login() {
   const [password, setPassword] = useState("");
 
   return (
-    <form className='m-auto border py-6 px-4 rounded w-1/4 flex flex-col'>
+    <form className='m-auto border py-6 px-4 rounded flex flex-col flex-shrink-0 max-w-[400px] min-w-[300px]'>
       <h3 className='text-center text-2xl font-sans text-slate-500 my-3'>Welcome Back!</h3>
       <input 
         type="email" 

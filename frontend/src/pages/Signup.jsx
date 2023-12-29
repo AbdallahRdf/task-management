@@ -1,13 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function Signup() {
+  const [Username, setUername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
   return (
-    <form className='m-auto border py-6 px-4 rounded w-1/4 flex flex-col'>
+    <form className='m-auto border py-6 px-4 rounded flex flex-col flex-shrink-0 max-w-[400px] min-w-[300px]'>
         <h3 className='text-center text-2xl font-sans text-slate-500 my-3'>Create An Account</h3>
-        <input type="text" placeholder='Username' className='border my-3 p-2 rounded'/>
-        <input type="email" placeholder='E-Mail' className='border my-3 p-2 rounded'/>
-        <input type="password" placeholder='Password' className='border my-3 p-2 rounded'/>
-        <input type="password" placeholder='Confirm Password' className='border my-3 p-2 rounded'/>
+        <input 
+          type="text" 
+          placeholder='Username' 
+          className='border my-3 p-2 rounded'
+          value={Username}
+          onChange={e => setUername(e.target.value)}
+        />
+        <input 
+          type="email" 
+          placeholder='E-Mail' 
+          className='border my-3 p-2 rounded'
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+        <input 
+          type="password" 
+          placeholder='Password' 
+          className='border my-3 p-2 rounded'
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <input 
+          type="password" 
+          placeholder='Confirm Password' 
+          className='border my-3 p-2 rounded'
+          value={passwordConfirm}
+          onChange={e => setPasswordConfirm(e.target.value)}
+        />
         <button className='bg-sky-600 text-slate-50 my-3 p-2 rounded'>Sign up</button>
     </form>
   )
