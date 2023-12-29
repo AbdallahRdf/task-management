@@ -1,5 +1,12 @@
 <?php
 
+function dd($value)
+{
+    echo "<pre>";
+    var_dump($value);
+    echo "</pre>";
+}
+
 // validate the name
 function isNameValid($name)
 {
@@ -11,7 +18,6 @@ function isStrValid($str)
 {
     return preg_match("/[a-zA-Z0-9]+(\s*([a-zA-Z0-9])*)*$/", $str); // This pattern is designed to match words consisting of alphabetical characters
 }
-
 
 // validate the password
 function isPasswordValid($password)

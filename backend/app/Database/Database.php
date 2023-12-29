@@ -1,5 +1,10 @@
 <?php
 
+namespace Backend\App\Database;
+
+use PDO;
+use PDOException;
+
 class Database
 {
     // dsn: database server hostname
@@ -20,14 +25,14 @@ class Database
         }
     }
 
-    public function query($sql, $params = null)
+    public function query($sql, $params = null, $fetchall = true)
     {
         try {
             $query = $this->db->prepare($sql);
 
             $query->execute($params);
 
-            return $query->fetchAll(PDO::FETCH_ASSOC);
+            return $fetchall ? $query->fetchAll(PDO::FETCH_ASSOC) : $query->fetch(PDO::FETCH_ASSOC);
         }
         catch(PDOException $error)
         {
