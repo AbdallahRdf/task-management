@@ -1,6 +1,8 @@
 <?php
 
-require_once "Database.php";
+namespace Backend\App\Models;
+
+use Backend\App\Database\Database;
 
 class Task
 {
@@ -10,7 +12,7 @@ class Task
 
         $params = [":id" => $user_id];
         
-        return (new Database)->query($sql, $params);
+        return (new Database())->query($sql, $params);
     }
 
     public static function create($task_name, $user_id)
@@ -22,7 +24,7 @@ class Task
             ":user" => $user_id
         ];
 
-        return (new Database)->query($sql, $params);
+        return (new Database())->query($sql, $params);
     }
 
     public static function update($task_name, $id)
@@ -34,7 +36,7 @@ class Task
             ":id" => $id
         ];
 
-        return (new Database)->query($sql, $params);
+        return (new Database())->query($sql, $params);
     }
 
     public static function delete($id)
@@ -43,7 +45,7 @@ class Task
 
         $params = [":id" => $id];
 
-        return (new Database)->query($sql, $params);
+        return (new Database())->query($sql, $params);
     }
 
     public static function check($is_checked, $id)
@@ -55,6 +57,6 @@ class Task
             ":id" => $id
         ];
 
-        return (new Database)->query($sql, $params);
+        return (new Database())->query($sql, $params);
     }    
 }
