@@ -12,8 +12,11 @@ class Workspace
     // get all the workspaces of a specific user
     public static function all($user_id)
     {
-        $sql = "SELECT workspaces.* FROM workspaces JOIN users_workspaces 
-        WHERE users_workspaces.user_id = :user_id AND users_workspaces.workspace_id = workspaces.id";
+        $sql = "SELECT workspaces.*, roles.title as permission
+            FROM workspaces JOIN users_workspaces JOIN roles 
+            WHERE users_workspaces.user_id = :user_id 
+            AND users_workspaces.workspace_id = workspaces.id 
+            AND roles.id = users_workspaces.role_id;";
 
         $params = [":user_id" => $user_id];
 
