@@ -15,12 +15,9 @@ echo "hell";
 
 // dd(User::get("abdolah@gmail.com"));
 
-// Workspace::update(1, [
-//     Workspace::NAME => "Rafraf's Workspace"
-// ]);
+Workspace::update(1, [
+    Workspace::NAME => "Workspace 1",
+    Workspace::DESCRIPTION => "Description 2"
+]);
 
-// Workspace::update(1, [
-//     Workspace::DESCRIPTION => "Rafraf's Workspace Description"
-// ]);
-
-dd(Workspace::all(5));
+Workspace::update(1, []);
