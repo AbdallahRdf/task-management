@@ -21,7 +21,7 @@ trait CRUDTrait
         $sql = "INSERT INTO " 
                 . static::TABLE . "("
                 . implode(", ", array_keys($assoc_array))
-                . " VALUES ("
+                . ") VALUES ("
                 . implode(", ", $named_parameters)
                 . ");";
 

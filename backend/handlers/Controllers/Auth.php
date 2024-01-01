@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Controllers;
+namespace Backend\Handlers\Controllers;
 
 use Backend\App\Models\User;
 
