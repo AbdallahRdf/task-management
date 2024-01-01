@@ -3,11 +3,11 @@
 namespace Backend\App\Models;
 
 use Backend\App\Database\Database;
-use Backend\App\Traits\UpdateTrait;
+use Backend\App\Traits\CRUDTrait;
 
 class Workspace
 {
-    use UpdateTrait;
+    use CRUDTrait;
 
     const TABLE = "workspaces";
     const NAME = "name";
@@ -25,27 +25,5 @@ class Workspace
         $params = [":user_id" => $user_id];
 
         return (new Database)->query($sql, $params);
-    }
-
-    // create a workspace
-    public static function create($name, $description = null)
-    {
-        $sql = "INSERT INTO workspaces (name, description) VALUES (:name, :description)";
-
-        $params = [
-            ":name" => $name,
-            ":description" => $description
-        ];
-
-        return (new Database)->query($sql, $params);
-    }
-
-    public static function delete($workspace_id)
-    {
-        $sql = "DELETE FROM workspaces WHERE id = :id";
-
-        $params = [":id" => $workspace_id];
-
-        return (new Database)->query($sql, $params);   
     }
 }
