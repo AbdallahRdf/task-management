@@ -2,7 +2,8 @@
     "name": "backend/app",
     "autoload": {
         "psr-4": {
-            "Backend\\App\\": "app/"
+            "Backend\\App\\": "app/",
+            "Backend\\Controllers\\": "controllers/"
         }
     },
     "require": {}
