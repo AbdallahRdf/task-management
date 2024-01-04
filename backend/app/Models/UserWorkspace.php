@@ -3,19 +3,14 @@
 namespace Backend\App\Models;
 
 use Backend\App\Database\Database;
+use Backend\App\Traits\CRUDTrait;
 
 class UserWorkspace
 {
-    public static function create($user_id, $workspace_id, $role_id)
-    {
-        $sql = "INSERT INTO users_workapces (user_id, workspace_id, role_id) VALUES (:user_id, :workspace_id, :role_id);";
+    use CRUDTrait;
 
-        $params = [
-            ":user_id" => $user_id,
-            ":workspace_id" => $workspace_id, 
-            ":role_id" => $role_id
-        ];
-
-        return (new Database)->query($sql, $params);
-    }
+    const TABLE = "users_workapces";
+    const USER_ID = "user_id";
+    const WORKSPACE_ID = "workspace_id";
+    const PERMISSION_ID = "permission_id";
 }
