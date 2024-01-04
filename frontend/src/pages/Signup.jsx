@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 const signupSchema = yup.object().shape({
   firstName: yup.string().required("Invalid First Name"),
@@ -18,9 +19,17 @@ function Signup() {
     resolver: yupResolver(signupSchema),
   });
 
+  const handleSignup = async (data) => {
+    console.log(new URLSearchParams(data));
+    const response = await axios.post("http://localhost/task-management/backend/handlers/api/auth.php", new URLSearchParams(data), {
+      headers: "application/x-www-form-urlencoded"
+    });
+    console.log(response.data);
+  }
+
   return (
     <>
-      <form onSubmit={handleSubmit((d) => console.log(d))} className='m-auto mt-24 border border-gray-500 py-6 px-4 rounded flex flex-col flex-shrink-0 max-w-[400px] min-w-[300px]'>
+      <form onSubmit={handleSubmit(handleSignup)} className='m-auto mt-24 border border-gray-500 py-6 px-4 rounded flex flex-col flex-shrink-0 max-w-[400px] min-w-[300px]'>
         <h3 className='text-center text-2xl font-sans text-gray-200 my-3'>Create An Account</h3>
         
         <div className='py-3'>
