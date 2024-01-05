@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { X } from 'lucide-react'
+import DangerAlert from '../components/DangerAlert';
 
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
@@ -15,6 +15,7 @@ function Login({ setUser, setWorkspaces }) {
 
   // state to show the alert or not
   const [show, setShow] = useState(false);
+  const navigateTo = useNavigate();
   
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(loginSchema)
@@ -29,6 +30,7 @@ function Login({ setUser, setWorkspaces }) {
     {
       setUser(response.data.user);
       setWorkspaces(response.data.workspaces);
+      navigateTo("/home");
     }
     else{
       setShow(true);
@@ -39,17 +41,7 @@ function Login({ setUser, setWorkspaces }) {
     <>
       <form onSubmit={handleSubmit(handleLogin)} className='m-auto mt-32 border border-gray-500 py-6 px-4 rounded flex flex-col flex-shrink-0 max-w-[400px] min-w-[300px]'>
 
-        {
-          show &&
-          <div className='relative text-red-400 border border-red-400 bg-[#B91C1C30] rounded py-4 mb-2 text-center'>
-            Incorrect Email or Password!
-              <X 
-                className='absolute top-1 end-1 cursor-pointer' 
-                size={18} 
-                onClick={() => setShow(false)}
-              />
-          </div>
-        }
+        {show && <DangerAlert setShow={setShow} message="Incorrect Email or Password!" />}
 
         <h3 className='text-center text-2xl font-sans text-gray-200 my-3'>Welcome Back!</h3>
 

@@ -1,37 +1,51 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import DangerAlert from '../components/DangerAlert';
 
 const signupSchema = yup.object().shape({
   firstName: yup.string().required("Invalid First Name"),
   lastName: yup.string().required("Invalid Last Name"),
-  email: yup.string().email().required("Invalid E-Mail"),
+  email: yup.string().email().required(),
   password: yup.string().required().min(6),
   passwordConfirm: yup.string().required("Password must match").test("password-match", "Password must match", function (value) {return this.parent.password === value})
 }).required();
 
 function Signup({ setUser }) {
 
+  const [show, setShow] = useState(false);
+
+  const navigateTo = useNavigate();
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(signupSchema),
   });
 
   const handleSignup = async (data) => {
-    console.log(new URLSearchParams(data));
     const response = await axios.post("http://localhost/task-management/backend/handlers/api/auth.php", new URLSearchParams(data), {
       headers: "application/x-www-form-urlencoded"
     });
-    // const responseFormatted = await response.json();
-    if(responseFormatted.data)
-      setUser(responseFormatted.data);
+
+    if(response.data)
+    {
+      setUser(response.data);
+      navigateTo("/home");
+    }
+    else
+    {
+      setShow(true);
+    }
   }
 
   return (
     <>
       <form onSubmit={handleSubmit(handleSignup)} className='m-auto mt-24 border border-gray-500 py-6 px-4 rounded flex flex-col flex-shrink-0 max-w-[400px] min-w-[300px]'>
+        
+        {show && <DangerAlert setShow={setShow} message="Incorrect Email!"/>}
+
         <h3 className='text-center text-2xl font-sans text-gray-200 my-3'>Create An Account</h3>
         
         <div className='py-3'>
@@ -61,7 +75,7 @@ function Signup({ setUser }) {
             className='block w-full border border-gray-500 bg-transparent text-gray-100 p-2 rounded'
             {...register('email')}
           />
-          {errors.email?.message && <small className='text-red-500'>{errors.email?.message}</small>}
+          {errors.email?.message && <small className='text-red-500'>Invalid E-Mail</small>}
         </div>
 
         <div className='py-3'>
