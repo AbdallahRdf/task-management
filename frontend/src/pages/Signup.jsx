@@ -13,7 +13,7 @@ const signupSchema = yup.object().shape({
   passwordConfirm: yup.string().required("Password must match").test("password-match", "Password must match", function (value) {return this.parent.password === value})
 }).required();
 
-function Signup() {
+function Signup({ setUser }) {
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(signupSchema),
@@ -24,7 +24,9 @@ function Signup() {
     const response = await axios.post("http://localhost/task-management/backend/handlers/api/auth.php", new URLSearchParams(data), {
       headers: "application/x-www-form-urlencoded"
     });
-    console.log(response.data);
+    // const responseFormatted = await response.json();
+    if(responseFormatted.data)
+      setUser(responseFormatted.data);
   }
 
   return (

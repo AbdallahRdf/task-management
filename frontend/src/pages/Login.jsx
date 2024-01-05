@@ -1,28 +1,78 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { X } from 'lucide-react'
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const loginSchema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().required()
+})
+
+function Login({ setUser, setWorkspaces }) {
+
+  // state to show the alert or not
+  const [show, setShow] = useState(false);
+  
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(loginSchema)
+  });
+
+  const handleLogin = async (data) => {
+    const response = await axios.post("http://localhost/task-management/backend/handlers/api/auth.php", new URLSearchParams(data), {
+      headers: "application/x-www-form-urlencoded"
+    });
+
+    if(response.data.user)
+    {
+      setUser(response.data.user);
+      setWorkspaces(response.data.workspaces);
+    }
+    else{
+      setShow(true);
+    }
+  }
 
   return (
     <>
-      <form className='m-auto mt-32 border border-gray-500 py-6 px-4 rounded flex flex-col flex-shrink-0 max-w-[400px] min-w-[300px]'>
+      <form onSubmit={handleSubmit(handleLogin)} className='m-auto mt-32 border border-gray-500 py-6 px-4 rounded flex flex-col flex-shrink-0 max-w-[400px] min-w-[300px]'>
+
+        {
+          show &&
+          <div className='relative text-red-400 border border-red-400 bg-[#B91C1C30] rounded py-4 mb-2 text-center'>
+            Incorrect Email or Password!
+              <X 
+                className='absolute top-1 end-1 cursor-pointer' 
+                size={18} 
+                onClick={() => setShow(false)}
+              />
+          </div>
+        }
+
         <h3 className='text-center text-2xl font-sans text-gray-200 my-3'>Welcome Back!</h3>
-        <input
-          type="email"
-          placeholder='E-Mail'
-          className='border border-gray-500 bg-transparent text-gray-100 my-3 p-2 rounded'
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder='Password'
-          className='border border-gray-500 bg-transparent text-gray-100 my-3 p-2 rounded'
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
+
+        <div className='py-3'>
+          <input
+            type="email"
+            placeholder='E-Mail'
+            className='block w-full border border-gray-500 bg-transparent text-gray-100 p-2 rounded'
+            {...register("email")}
+          />
+          { errors.email?.message && <small className='text-red-500'>{ errors.email?.message }</small>}
+        </div>
+
+        <div className='py-3'>
+          <input
+            type="password"
+            placeholder='Password'
+            className='block w-full border border-gray-500 bg-transparent text-gray-100 p-2 rounded'
+            {...register("password")}
+          />
+          {errors.password?.message && <small className='text-red-500'>{errors.password?.message}</small>}
+        </div>
+
         <button className='bg-sky-600 hover:bg-sky-500 text-slate-50 my-3 p-2 rounded'>Log in</button>
       </form>
       <p className='text-center text-gray-300 mt-2'>

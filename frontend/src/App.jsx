@@ -1,9 +1,13 @@
 import {Link, Route, Routes, useHref} from 'react-router-dom'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import { useState } from 'react';
 
 function App() {
   
+  const [user, setUser] = useState(null);
+  const [Workspaces, setWorkspaces] = useState(null);
+
   return (
     <>
       {
@@ -14,8 +18,8 @@ function App() {
         </div>
       }
       <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
+        <Route path='/login' element={<Login setUser={setUser} setWorkspaces={setWorkspaces} />} />
+        <Route path='/signup' element={<Signup setUser={setUser} />} />
       </Routes>
     </>
   )
