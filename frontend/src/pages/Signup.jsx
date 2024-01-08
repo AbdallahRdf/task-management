@@ -4,8 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import DangerAlert from '../components/DangerAlert';
+import DangerAlert from '../components/auth/DangerAlert';
 
+// signup validation schema
 const signupSchema = yup.object().shape({
   firstName: yup.string().required("Invalid First Name"),
   lastName: yup.string().required("Invalid Last Name"),
@@ -25,18 +26,20 @@ function Signup({ setUser }) {
   });
 
   const handleSignup = async (data) => {
-    const response = await axios.post("http://localhost/task-management/backend/handlers/api/auth.php", new URLSearchParams(data), {
-      headers: "application/x-www-form-urlencoded"
-    });
+    const authAPI = "http://localhost/task-management/backend/handlers/api/auth.php";
+    try {
+      const response = await axios.post(authAPI, new URLSearchParams(data), {
+        headers: "application/x-www-form-urlencoded"
+      });
 
-    if(response.data)
-    {
-      setUser(response.data);
-      navigateTo("/home");
-    }
-    else
-    {
-      setShow(true);
+      if (response.data) {
+        setUser(response.data);
+        navigateTo("/home");
+      } else {
+        setShow(true);
+      }
+    } catch(e) {
+      console.log(`error occured during signup: ${e}`);
     }
   }
 

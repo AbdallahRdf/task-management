@@ -4,14 +4,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import DangerAlert from '../components/DangerAlert';
+import DangerAlert from '../components/auth/DangerAlert';
 
+// login validation schema
 const loginSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required()
 })
 
-function Login({ setUser, setWorkspaces }) {
+function Login({ setUser }) {
 
   // state to show the alert or not
   const [show, setShow] = useState(false);
@@ -22,18 +23,20 @@ function Login({ setUser, setWorkspaces }) {
   });
 
   const handleLogin = async (data) => {
-    const response = await axios.post("http://localhost/task-management/backend/handlers/api/auth.php", new URLSearchParams(data), {
-      headers: "application/x-www-form-urlencoded"
-    });
+    const authAPI = "http://localhost/task-management/backend/handlers/api/auth.php";
+    try {
+      const response = await axios.post(authAPI, new URLSearchParams(data), {
+        headers: "application/x-www-form-urlencoded"
+      });
 
-    if(response.data.user)
-    {
-      setUser(response.data.user);
-      setWorkspaces(response.data.workspaces);
-      navigateTo("/home");
-    }
-    else{
-      setShow(true);
+      if (response.data) {
+        setUser(response.data);
+        navigateTo("/home");
+      } else {
+        setShow(true);
+      }
+    } catch(e) {
+      console.log(`error occured during login: ${e}`);
     }
   }
 

@@ -5,7 +5,6 @@ ini_set("display_errors", 1);
 
 require_once "../../vendor/autoload.php";
 
-use Backend\App\Models\Workspace;
 use Backend\Handlers\Controllers\Auth;
 
 header("Access-Control-Allow-Origin: *");
@@ -19,14 +18,5 @@ if(isset($_POST["firstName"]) && isset($_POST["lastName"])) // signup process
 }
 else // login process
 {
-    $user = Auth::log_in($_POST['email'], $_POST['password']);
-    if(!$user)
-    {
-        echo json_encode($user);
-        die();
-    }
-    echo json_encode([
-        'user' => $user,
-        'workspaces' => Workspace::all($user['id'])
-    ]);
+    echo json_encode(Auth::log_in($_POST['email'], $_POST['password'])); // get the user credentials
 }

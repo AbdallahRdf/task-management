@@ -7,7 +7,6 @@ import { useState } from 'react';
 function App() {
   
   const [user, setUser] = useState(null);
-  const [Workspaces, setWorkspaces] = useState(null);
 
   return (
     <>
@@ -19,9 +18,9 @@ function App() {
         </div>
       }
       <Routes>
-        <Route path='/login' element={<Login setUser={setUser} setWorkspaces={setWorkspaces} />} />
+        <Route path='/login' element={<Login setUser={setUser} />} />
         <Route path='/signup' element={<Signup setUser={setUser} />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/home' element={<Home user={user} />} />
       </Routes>
     </>
   )
